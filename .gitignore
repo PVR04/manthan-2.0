@@ -1,0 +1,6 @@
+cloudflared.exe
+extracted_assets/
+rendered_pages/
+brochure_text.txt
+qr_*.png
+.system_generated/
