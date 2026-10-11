@@ -360,28 +360,31 @@ img {
 }
 
 .nav-container {
-  max-width: var(--container-width);
+  max-width: 100%;
+  width: 100%;
   margin: 0 auto;
-  padding: 0.8rem 1.5rem;
+  padding: 1rem 3.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 3rem;
 }
 
 .brand-group {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 1.4rem;
+  flex-shrink: 0;
 }
 
 .brand-logos {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1.2rem;
 }
 
 .brand-logo-jain {
-  height: 38px;
+  height: 36px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
@@ -389,12 +392,12 @@ img {
 
 .brand-divider {
   width: 1px;
-  height: 28px;
-  background: rgba(255, 255, 255, 0.2);
+  height: 26px;
+  background: rgba(255, 255, 255, 0.25);
 }
 
 .brand-logo-anviksa {
-  height: 36px;
+  height: 34px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.5));
@@ -403,14 +406,16 @@ img {
 .brand-text {
   display: flex;
   flex-direction: column;
+  margin-left: 0.2rem;
 }
 
 .brand-title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
   letter-spacing: 0.08em;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .brand-sub {
@@ -418,28 +423,36 @@ img {
   font-size: 0.68rem;
   color: var(--text-muted);
   letter-spacing: 0.1em;
+  white-space: nowrap;
 }
 
 .desktop-nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: 2.4rem;
+  flex-grow: 1;
+  margin: 0 1.5rem;
 }
 
 .nav-link {
   font-family: var(--font-heading);
-  font-size: 0.9rem;
+  font-size: 0.98rem;
   font-weight: 500;
   color: var(--text-sub);
   position: relative;
-  padding: 0.4rem 0;
+  padding: 0.5rem 0.8rem;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+  border-radius: 8px;
+  transition: all var(--transition-fast);
 }
 
 .nav-link::after {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 0;
+  left: 15%;
   width: 0;
   height: 2px;
   background: var(--cyan-bright);
@@ -449,16 +462,18 @@ img {
 
 .nav-link:hover {
   color: #ffffff;
+  background: rgba(0, 229, 255, 0.08);
 }
 
 .nav-link:hover::after {
-  width: 100%;
+  width: 70%;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 0.8rem;
+  gap: 1.3rem;
+  flex-shrink: 0;
 }
 
 .mobile-toggle {
