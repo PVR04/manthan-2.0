@@ -2093,11 +2093,11 @@ img {
   transition: all 0.2s ease;
 }
 
-.track-showcase-item:hover .track-bullet {
+/* .track-showcase-item:hover .track-bullet {
   background: rgba(0, 229, 255, 0.2);
   box-shadow: 0 0 10px rgba(0, 229, 255, 0.35);
   transform: scale(1.06);
-}
+} */
 
 .track-text {
   color: #f1f5f9;
