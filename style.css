@@ -360,31 +360,32 @@ img {
 }
 
 .nav-container {
-  max-width: 100%;
   width: 100%;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 1rem 3.5rem;
+  padding: 0.7rem clamp(1rem, 2vw, 2.2rem);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 3rem;
+  gap: clamp(1rem, 1.8vw, 2rem);
+  box-sizing: border-box;
 }
 
 .brand-group {
   display: flex;
   align-items: center;
-  gap: 1.4rem;
+  gap: 1rem;
   flex-shrink: 0;
 }
 
 .brand-logos {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
+  gap: 0.8rem;
 }
 
 .brand-logo-jain {
-  height: 36px;
+  height: 30px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.2));
@@ -392,12 +393,12 @@ img {
 
 .brand-divider {
   width: 1px;
-  height: 26px;
+  height: 22px;
   background: rgba(255, 255, 255, 0.25);
 }
 
 .brand-logo-anviksa {
-  height: 34px;
+  height: 28px;
   width: auto;
   object-fit: contain;
   filter: drop-shadow(0 0 6px rgba(0, 229, 255, 0.5));
@@ -406,23 +407,14 @@ img {
 .brand-text {
   display: flex;
   flex-direction: column;
-  margin-left: 0.2rem;
 }
 
 .brand-title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   letter-spacing: 0.08em;
   color: #ffffff;
-  white-space: nowrap;
-}
-
-.brand-sub {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
   white-space: nowrap;
 }
 
@@ -430,21 +422,20 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 2.4rem;
-  flex-grow: 1;
-  margin: 0 1.5rem;
+  gap: clamp(0.7rem, 1.3vw, 1.5rem);
+  flex-shrink: 1;
 }
 
 .nav-link {
   font-family: var(--font-heading);
-  font-size: 0.98rem;
+  font-size: clamp(0.82rem, 0.9vw, 0.9rem);
   font-weight: 500;
   color: var(--text-sub);
   position: relative;
-  padding: 0.5rem 0.8rem;
+  padding: 0.35rem 0.55rem;
   white-space: nowrap;
   letter-spacing: 0.02em;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all var(--transition-fast);
 }
 
@@ -452,7 +443,7 @@ img {
   content: '';
   position: absolute;
   bottom: 0;
-  left: 15%;
+  left: 10%;
   width: 0;
   height: 2px;
   background: var(--cyan-bright);
@@ -466,13 +457,13 @@ img {
 }
 
 .nav-link:hover::after {
-  width: 70%;
+  width: 80%;
 }
 
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 1.3rem;
+  gap: 0.8rem;
   flex-shrink: 0;
 }
 
@@ -2914,24 +2905,21 @@ img {
    ========================================================================== */
 @media (max-width: 1240px) {
   .nav-container {
-    padding: 0.8rem 1.5rem;
-    gap: 1.5rem;
+    padding: 0.6rem 1.2rem;
+    gap: 1.2rem;
   }
 
   .desktop-nav {
-    gap: 1.4rem;
+    gap: 1rem;
   }
 
   .nav-link {
-    font-size: 0.88rem;
-  }
-
-  .brand-sub {
-    display: none;
+    font-size: 0.85rem;
+    padding: 0.3rem 0.45rem;
   }
 }
 
-@media (max-width: 1080px) {
+@media (max-width: 1040px) {
   .desktop-nav {
     display: none;
   }
