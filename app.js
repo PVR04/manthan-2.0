@@ -430,7 +430,7 @@ function initRegistrationWizard() {
       regId: regId,
       timestamp: new Date().toISOString(),
       teamName: document.getElementById('teamName')?.value.trim() || '',
-      track: document.getElementById('trackChoice')?.value || 'General Track',
+      track: document.getElementById('trackChoice')?.value || 'All 6 Challenge Tracks',
       college: document.getElementById('collegeName')?.value.trim() || '',
       city: document.getElementById('collegeCity')?.value.trim() || '',
       synopsis: document.getElementById('projectSynopsis')?.value?.trim() || '',
