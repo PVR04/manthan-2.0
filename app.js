@@ -787,7 +787,7 @@ function initOrganizerDesk() {
   const btnExportCsv = document.getElementById('btnExportCsv');
   const btnClearSubmissions = document.getElementById('btnClearSubmissions');
 
-  const SECRET_PIN = 'anviksa2026';
+  const validPins = ['anviksa2026', '2026', 'manthan2026'];
 
   if (btnOpenDesk && organizerModal) {
     btnOpenDesk.addEventListener('click', () => {
@@ -803,7 +803,8 @@ function initOrganizerDesk() {
 
   if (btnVerifyPin) {
     btnVerifyPin.addEventListener('click', () => {
-      if (adminPinInput.value.trim() === SECRET_PIN) {
+      const enteredPin = adminPinInput.value.trim().toLowerCase();
+      if (validPins.includes(enteredPin)) {
         adminAuthBox.classList.add('hidden');
         adminDataBox.classList.remove('hidden');
         adminPinError.classList.add('hidden');
