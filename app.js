@@ -495,15 +495,12 @@ function initRegistrationWizard() {
       });
     }
 
-    // 1. Store in localStorage immediately
-    saveToLocalStorage(registrationData);
-
-    // 2. Dispatch static service in background (non-blocking, no wait freeze!)
-    sendViaStaticService(registrationData).catch((err) => {
-      console.warn('Direct static API post fallback to client-side mail draft:', err);
+    // 1. Dispatch emails automatically to both Organizer (anviksa2025@gmail.com) and Team Leader
+    sendAutomaticEmails(registrationData).catch((err) => {
+      console.warn('Automatic email dispatch notification:', err);
     });
 
-    // 3. Immediately show Success Modal with Pass without delays
+    // 2. Immediately show Success Modal with Pass without delays
     displayRegistrationPass(registrationData);
 
     if (submitBtn) {
@@ -530,56 +527,78 @@ function hideFormAlert() {
 }
 
 /* ==========================================================================
-   8. EMAIL DISPATCH & STORAGE ENGINE
+   8. AUTOMATIC EMAIL DISPATCH ENGINE (NO LOCALSTORAGE)
    ========================================================================== */
-function saveToLocalStorage(data) {
-  try {
-    const list = JSON.parse(localStorage.getItem('manthan_registrations') || '[]');
-    list.unshift(data);
-    localStorage.setItem('manthan_registrations', JSON.stringify(list));
-  } catch (e) {
-    console.error('LocalStorage write error:', e);
-  }
-}
+async function sendAutomaticEmails(data) {
+  const leaderEmail = data.leader?.email?.trim();
+  const organizerEmail = 'anviksa2025@gmail.com';
 
-async function sendViaStaticService(data) {
-  // Web3Forms or Formspree static submission
-  // Web3Forms allows submissions with public key or direct email notification
-  const bodyData = {
-    access_key: 'PUBLIC_ANVIKSA_FORM_KEY', // Organizers can replace with their Web3Forms key
-    subject: `[MANTHAN 2.0 REGISTRATION] Team: ${data.teamName} (${data.regId})`,
-    from_name: 'MANTHAN 2.0 Portal',
-    to_email: 'anviksa2025@gmail.com',
-    Registration_ID: data.regId,
-    Team_Name: data.teamName,
-    Selected_Track: data.track,
-    College: `${data.college}, ${data.city}`,
-    Leader_Name: data.leader.name,
-    Leader_Email: data.leader.email,
-    Leader_Phone: data.leader.phone,
-    Total_Members: data.teamSize,
-    Members_Details: JSON.stringify(data.members),
-    UPI_UTR_Number: data.payment.utr,
-    Payer_Account_Name: data.payment.payerName,
-    Fee_Amount: '₹ 1500/- INR',
-    Idea_Synopsis: data.synopsis || 'N/A'
+  // Format team members details cleanly
+  let membersSummary = '';
+  if (data.members && data.members.length > 0) {
+    membersSummary = data.members.map((m, idx) => 
+      `• Member ${idx + 2}: ${m.name || 'N/A'} (Email: ${m.email || 'N/A'}, Phone: ${m.phone || 'N/A'}, Role: ${m.role || 'Member'})`
+    ).join('\n');
+  } else {
+    membersSummary = 'None (Solo/Pair)';
+  }
+
+  // Construct comprehensive event & registration details
+  const emailPayload = {
+    _subject: `[MANTHAN 2.0 REGISTRATION CONFIRMED] Team: ${data.teamName} (Reg ID: ${data.regId})`,
+    _replyto: leaderEmail || organizerEmail,
+    _cc: leaderEmail, // Automatically sends carbon-copy to the Team Leader!
+    _template: 'table',
+    "Registration_ID": data.regId,
+    "Team_Name": data.teamName,
+    "Challenge_Track": data.track || 'All 6 Challenge Tracks',
+    "College_University": `${data.college}, ${data.city}`,
+    "Leader_Name": data.leader.name,
+    "Leader_Email": leaderEmail,
+    "Leader_Phone": data.leader.phone,
+    "Leader_Degree_Year": `${data.leader.degree} (${data.leader.year})`,
+    "Total_Team_Size": `${data.teamSize} Members`,
+    "Team_Members": membersSummary,
+    "Payment_UTR_Number": data.payment.utr,
+    "Payer_Account_Name": data.payment.payerName,
+    "Registration_Fee": '₹ 1,500/- INR',
+    "Event_Dates": '22 - 24 October 2026',
+    "Venue": 'Centre for Management Studies (CMS), JAIN (Deemed-to-be University), 133, Lal Bagh Main Rd, Bengaluru 560027',
+    "Event_Schedule": 'Day 1: AI Blueprinting & Ideation | Day 2: 24-Hour Hackathon Build | Day 3: Pitch & Defense before Industry Jury',
+    "Confirmation_Notice": `Congratulations Team ${data.teamName}! Your registration for MANTHAN 2.0 Hackathon is successfully recorded. Please present your Registration ID (${data.regId}) and payment UTR (${data.payment.utr}) during physical check-in on Day 1 at 8:30 AM.`
   };
 
-  // Attempt fetch (non-blocking with timeout)
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 4000);
-
+  // 1. Primary Dispatch via FormSubmit (auto-delivers to anviksa2025@gmail.com and CCs the Team Leader)
   try {
+    await fetch(`https://formsubmit.co/ajax/${organizerEmail}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(emailPayload)
+    });
+  } catch (err1) {
+    console.warn('FormSubmit automatic email dispatch note:', err1);
+  }
+
+  // 2. Secondary Dispatch via Web3Forms API
+  try {
+    const web3Payload = {
+      access_key: 'PUBLIC_ANVIKSA_FORM_KEY',
+      to_email: organizerEmail,
+      cc_email: leaderEmail,
+      subject: `[MANTHAN 2.0 REGISTRATION] Team: ${data.teamName} (${data.regId})`,
+      from_name: 'MANTHAN 2.0 Portal',
+      ...emailPayload
+    };
     await fetch('https://api.web3forms.com/submit', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-      body: JSON.stringify(bodyData),
-      signal: controller.signal
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(web3Payload)
     });
-    clearTimeout(timeoutId);
-  } catch (e) {
-    clearTimeout(timeoutId);
-    // Silent catch, fallback is ready
+  } catch (err2) {
+    console.warn('Web3Forms backup dispatch note:', err2);
   }
 }
 
@@ -656,7 +675,6 @@ function initModals() {
   const btnCloseSuccessModal = document.getElementById('btnCloseSuccessModal');
   const btnClosePassBtn = document.getElementById('btnClosePassBtn');
   const btnPrintPass = document.getElementById('btnPrintPass');
-  const btnEmailDispatch = document.getElementById('btnEmailDispatch');
 
   if (btnCloseSuccessModal) {
     btnCloseSuccessModal.addEventListener('click', () => successModal.classList.remove('open'));
@@ -667,14 +685,6 @@ function initModals() {
   if (btnPrintPass) {
     btnPrintPass.addEventListener('click', () => {
       window.print();
-    });
-  }
-  if (btnEmailDispatch) {
-    btnEmailDispatch.addEventListener('click', () => {
-      if (lastSubmittedData) {
-        const mailUrl = generateMailtoLink(lastSubmittedData);
-        window.open(mailUrl, '_blank');
-      }
     });
   }
 
