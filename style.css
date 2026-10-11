@@ -2038,6 +2038,23 @@ img {
   color: #ffffff;
 }
 
+.challenge-tracks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.challenge-track-item {
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
 .form-textarea {
   resize: vertical;
 }
