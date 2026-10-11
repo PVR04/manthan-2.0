@@ -429,31 +429,31 @@ function initRegistrationWizard() {
     const registrationData = {
       regId: regId,
       timestamp: new Date().toISOString(),
-      teamName: document.getElementById('teamName').value.trim(),
-      track: document.getElementById('trackChoice').value,
-      college: document.getElementById('collegeName').value.trim(),
-      city: document.getElementById('collegeCity').value.trim(),
-      synopsis: document.getElementById('projectSynopsis').value.trim(),
+      teamName: document.getElementById('teamName')?.value.trim() || '',
+      track: document.getElementById('trackChoice')?.value || 'General Track',
+      college: document.getElementById('collegeName')?.value.trim() || '',
+      city: document.getElementById('collegeCity')?.value.trim() || '',
+      synopsis: document.getElementById('projectSynopsis')?.value?.trim() || '',
       leader: {
-        name: document.getElementById('leaderName').value.trim(),
-        email: document.getElementById('leaderEmail').value.trim(),
-        phone: document.getElementById('leaderPhone').value.trim(),
-        degree: document.getElementById('leaderDegree').value.trim(),
-        year: document.getElementById('leaderYear').value
+        name: document.getElementById('leaderName')?.value.trim() || '',
+        email: document.getElementById('leaderEmail')?.value.trim() || '',
+        phone: document.getElementById('leaderPhone')?.value.trim() || '',
+        degree: document.getElementById('leaderDegree')?.value.trim() || '',
+        year: document.getElementById('leaderYear')?.value || ''
       },
       teamSize: teamSize,
       members: [
         {
-          name: document.getElementById('m2Name').value.trim(),
-          email: document.getElementById('m2Email').value.trim(),
-          phone: document.getElementById('m2Phone').value.trim(),
-          role: document.getElementById('m2Role').value.trim()
+          name: document.getElementById('m2Name')?.value.trim() || '',
+          email: document.getElementById('m2Email')?.value.trim() || '',
+          phone: document.getElementById('m2Phone')?.value.trim() || '',
+          role: document.getElementById('m2Role')?.value.trim() || ''
         }
       ],
       payment: {
         fee: '1500',
-        utr: document.getElementById('paymentUtr').value.trim(),
-        payerName: document.getElementById('payerName').value.trim()
+        utr: document.getElementById('paymentUtr')?.value.trim() || '',
+        payerName: document.getElementById('payerName')?.value.trim() || ''
       }
     };
 
@@ -618,13 +618,13 @@ let lastSubmittedData = null;
 function displayRegistrationPass(data) {
   lastSubmittedData = data;
 
-  document.getElementById('passTeamName').textContent = data.teamName;
-  document.getElementById('passRegId').textContent = data.regId;
-  document.getElementById('passTrack').textContent = data.track;
-  document.getElementById('passCollege').textContent = data.college;
-  document.getElementById('passLeader').textContent = data.leader.name;
-  document.getElementById('passMembersCount').textContent = `${data.teamSize} Members`;
-  document.getElementById('passUtr').textContent = data.payment.utr;
+  if (document.getElementById('passTeamName')) document.getElementById('passTeamName').textContent = data.teamName || '';
+  if (document.getElementById('passRegId')) document.getElementById('passRegId').textContent = data.regId || '';
+  if (document.getElementById('passTrack')) document.getElementById('passTrack').textContent = data.track || 'General Track';
+  if (document.getElementById('passCollege')) document.getElementById('passCollege').textContent = data.college || '';
+  if (document.getElementById('passLeader')) document.getElementById('passLeader').textContent = data.leader?.name || '';
+  if (document.getElementById('passMembersCount')) document.getElementById('passMembersCount').textContent = `${data.teamSize} Members`;
+  if (document.getElementById('passUtr')) document.getElementById('passUtr').textContent = data.payment?.utr || '';
 
   const successModal = document.getElementById('successModal');
   if (successModal) {
