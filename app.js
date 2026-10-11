@@ -353,6 +353,9 @@ function initRegistrationWizard() {
     let firstInvalid = null;
 
     requiredInputs.forEach((input) => {
+      // Skip validation if the input is inside a hidden card
+      if (input.closest('.hidden')) return;
+
       if (!input.checkValidity()) {
         isValid = false;
         input.style.borderColor = 'var(--accent-rose)';
@@ -378,15 +381,32 @@ function initRegistrationWizard() {
   const memberCard4 = document.getElementById('memberCard4');
 
   function updateMemberFields(size) {
+    const m3Name = document.getElementById('m3Name');
+    const m3Email = document.getElementById('m3Email');
+    const m4Name = document.getElementById('m4Name');
+    const m4Email = document.getElementById('m4Email');
+
     if (size === 2) {
       if (memberCard3) memberCard3.classList.add('hidden');
       if (memberCard4) memberCard4.classList.add('hidden');
+      if (m3Name) m3Name.required = false;
+      if (m3Email) m3Email.required = false;
+      if (m4Name) m4Name.required = false;
+      if (m4Email) m4Email.required = false;
     } else if (size === 3) {
       if (memberCard3) memberCard3.classList.remove('hidden');
       if (memberCard4) memberCard4.classList.add('hidden');
+      if (m3Name) m3Name.required = true;
+      if (m3Email) m3Email.required = true;
+      if (m4Name) m4Name.required = false;
+      if (m4Email) m4Email.required = false;
     } else if (size === 4) {
       if (memberCard3) memberCard3.classList.remove('hidden');
       if (memberCard4) memberCard4.classList.remove('hidden');
+      if (m3Name) m3Name.required = true;
+      if (m3Email) m3Email.required = true;
+      if (m4Name) m4Name.required = true;
+      if (m4Email) m4Email.required = true;
     }
   }
 
@@ -400,7 +420,7 @@ function initRegistrationWizard() {
   const btnCopyUpi = document.getElementById('btnCopyUpi');
   if (btnCopyUpi) {
     btnCopyUpi.addEventListener('click', () => {
-      const upiText = '9027273632@okaxis';
+      const upiText = 'pavithramagesh029@okaxis';
       navigator.clipboard.writeText(upiText).then(() => {
         btnCopyUpi.innerHTML = '<i class="fa-solid fa-check" style="color:var(--accent-green)"></i>';
         setTimeout(() => {
@@ -475,17 +495,15 @@ function initRegistrationWizard() {
       });
     }
 
-    // 1. Store in localStorage
+    // 1. Store in localStorage immediately
     saveToLocalStorage(registrationData);
 
-    // 2. Prepare Formspree / Web3Forms POST payload or mailto fallback
-    try {
-      await sendViaStaticService(registrationData);
-    } catch (err) {
+    // 2. Dispatch static service in background (non-blocking, no wait freeze!)
+    sendViaStaticService(registrationData).catch((err) => {
       console.warn('Direct static API post fallback to client-side mail draft:', err);
-    }
+    });
 
-    // 3. Show Success Modal with Pass
+    // 3. Immediately show Success Modal with Pass without delays
     displayRegistrationPass(registrationData);
 
     if (submitBtn) {
