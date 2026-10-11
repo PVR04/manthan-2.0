@@ -683,26 +683,36 @@ img {
 .association-badge {
   display: inline-flex;
   align-items: center;
-  gap: 1rem;
-  background: rgba(10, 25, 55, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
-  padding: 0.6rem 1.4rem;
+  gap: 1.2rem;
+  background: rgba(10, 25, 55, 0.7);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+  border-radius: 14px;
+  padding: 0.8rem 1.8rem;
   margin-bottom: 2.5rem;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
 }
 
 .assoc-label {
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  letter-spacing: 0.1em;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-sub);
+  letter-spacing: 0.12em;
 }
 
+.association-badge img,
 .assoc-logo {
-  height: 28px;
+  height: 55px;
   width: auto;
+  max-height: 70px;
   object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.25));
+  transition: transform var(--transition-fast);
+}
+
+.association-badge:hover .assoc-logo {
+  transform: scale(1.05);
 }
 
 /* Hero Meta Cards Grid */
