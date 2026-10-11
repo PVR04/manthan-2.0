@@ -365,6 +365,21 @@ function initRegistrationWizard() {
       }
     });
 
+    // Strict 12-digit validation for Step 4 UPI UTR Number
+    if (isValid && stepNum === 4) {
+      const utrEl = document.getElementById('paymentUtr');
+      if (utrEl) {
+        const val = utrEl.value.trim();
+        if (!/^[0-9]{12}$/.test(val)) {
+          isValid = false;
+          utrEl.style.borderColor = 'var(--accent-rose)';
+          utrEl.focus();
+          showFormAlert('The UPI Reference Number (UTR) must be exactly 12 numeric digits (no letters or spaces).', 'error');
+          return false;
+        }
+      }
+    }
+
     if (!isValid && firstInvalid) {
       firstInvalid.focus();
       showFormAlert('Please fill out all required fields before proceeding.', 'error');
@@ -427,6 +442,28 @@ function initRegistrationWizard() {
           btnCopyUpi.innerHTML = '<i class="fa-regular fa-copy"></i>';
         }, 2000);
       });
+    });
+  }
+
+  // Live UTR Formatting & Instant Validation (Numbers only, max 12 digits)
+  const utrInput = document.getElementById('paymentUtr');
+  if (utrInput) {
+    utrInput.addEventListener('input', () => {
+      // Auto-strip any non-numeric characters and cap at 12 digits
+      utrInput.value = utrInput.value.replace(/\D/g, '').slice(0, 12);
+      if (utrInput.value.length === 12) {
+        utrInput.style.borderColor = 'var(--accent-green)';
+        hideFormAlert();
+      } else if (utrInput.value.length > 0) {
+        utrInput.style.borderColor = 'var(--border-cyan)';
+      }
+    });
+
+    utrInput.addEventListener('blur', () => {
+      if (utrInput.value.length > 0 && utrInput.value.length !== 12) {
+        utrInput.style.borderColor = 'var(--accent-rose)';
+        showFormAlert(`UTR number must be exactly 12 digits. You entered ${utrInput.value.length} digits.`, 'error');
+      }
     });
   }
 
