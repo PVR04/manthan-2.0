@@ -95,33 +95,36 @@
         </button>
       </div>
     </div>
-
-    <!-- Mobile Drawer Navigation -->
-    <div class="mobile-drawer" id="mobileDrawer">
-      <div class="drawer-header">
-        <span class="drawer-title">Navigation Menu</span>
-        <button class="drawer-close" id="drawerCloseBtn">&times;</button>
-      </div>
-      <nav class="mobile-nav-links">
-        <a href="#about" class="mobile-link">About Hackathon</a>
-        <a href="#tracks" class="mobile-link">6 AI Challenge Tracks</a>
-        <a href="#journey" class="mobile-link">3-Day Journey (Rounds)</a>
-        <a href="#pillars" class="mobile-link">Four Pillars</a>
-        <a href="#alignment" class="mobile-link">Thematic Alignment</a>
-        <a href="#brochure" class="mobile-link">Official Brochure</a>
-        <a href="#faq" class="mobile-link">Frequently Asked Questions</a>
-        <a href="#contact" class="mobile-link">Contact & Venue</a>
-      </nav>
-      <div class="drawer-ctas">
-        <a href="#register" class="btn btn-cyber btn-block mobile-drawer-cta">
-          <i class="fa-solid fa-rocket"></i> Register Team (₹1,500)
-        </a>
-        <a href="Manthan_2.0 Brochure.pdf" download="Manthan_2.0 Brochure.pdf" class="btn btn-ghost btn-block mobile-drawer-cta">
-          <i class="fa-solid fa-download"></i> Download Brochure
-        </a>
-      </div>
-    </div>
   </header>
+
+  <!-- Mobile Drawer Overlay -->
+  <div class="drawer-overlay" id="drawerOverlay"></div>
+
+  <!-- Mobile Drawer Navigation -->
+  <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-modal="true" aria-label="Mobile Navigation Menu">
+    <div class="drawer-header">
+      <span class="drawer-title"><i class="fa-solid fa-compass" style="color:var(--cyan-bright);margin-right:6px;"></i> Navigation</span>
+      <button class="drawer-close" id="drawerCloseBtn" aria-label="Close navigation menu">&times;</button>
+    </div>
+    <nav class="mobile-nav-links">
+      <a href="#about" class="mobile-link"><i class="fa-solid fa-circle-info"></i> About Hackathon</a>
+      <a href="#tracks" class="mobile-link"><i class="fa-solid fa-microchip"></i> 6 AI Challenge Tracks</a>
+      <a href="#journey" class="mobile-link"><i class="fa-solid fa-timeline"></i> 3-Day Journey (Rounds)</a>
+      <a href="#pillars" class="mobile-link"><i class="fa-solid fa-monument"></i> Four Pillars</a>
+      <a href="#alignment" class="mobile-link"><i class="fa-solid fa-bullseye"></i> Thematic Alignment</a>
+      <a href="#brochure" class="mobile-link"><i class="fa-solid fa-file-pdf"></i> Official Brochure</a>
+      <a href="#faq" class="mobile-link"><i class="fa-solid fa-circle-question"></i> Frequently Asked Questions</a>
+      <a href="#contact" class="mobile-link"><i class="fa-solid fa-location-dot"></i> Contact & Venue</a>
+    </nav>
+    <div class="drawer-ctas">
+      <a href="#register" class="btn btn-cyber btn-block mobile-drawer-cta">
+        <i class="fa-solid fa-rocket"></i> Register Team (₹1,500)
+      </a>
+      <a href="Manthan_2.0 Brochure.pdf" download="Manthan_2.0 Brochure.pdf" class="btn btn-ghost btn-block mobile-drawer-cta">
+        <i class="fa-solid fa-download"></i> Download Brochure
+      </a>
+    </div>
+  </div>
 
   <main>
     <!-- HERO SECTION -->
@@ -985,7 +988,7 @@
           </div>
           <div class="brochure-right">
             <div class="brochure-preview-frame">
-              <img src="assets/manthan_hero_bg.png" alt="Manthan 2.0 Brochure Cover" class="brochure-cover-img">
+              <img src="assets/image.png" alt="Manthan 2.0 Brochure Cover" class="brochure-cover-img">
               <div class="preview-badge">15 Pages &bull; Official Release</div>
             </div>
           </div>
