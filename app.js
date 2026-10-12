@@ -622,7 +622,7 @@ async function sendAutomaticEmails(data) {
   // 2. Secondary Dispatch via Web3Forms API
   try {
     const web3Payload = {
-      access_key: 'PUBLIC_ANVIKSA_FORM_KEY',
+      access_key: 'a377d271-80c3-4fa9-a182-a806a2c761ed',
       to_email: organizerEmail,
       cc_email: leaderEmail,
       subject: `[MANTHAN 2.0 REGISTRATION] Team: ${data.teamName} (${data.regId})`,
