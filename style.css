@@ -709,10 +709,25 @@ img {
   flex-shrink: 0;
   width: clamp(150px, 18vw, 250px);
   max-width: 250px;
+  aspect-ratio: 559 / 686;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
+  cursor: grab;
+  user-select: none;
+  touch-action: pan-y;
+  filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.45)) drop-shadow(0 0 60px rgba(0, 102, 255, 0.3));
+  animation: heroGlobeCircularOrbit 7s linear infinite;
+  transition: filter 0.3s ease;
+}
+
+.hero-globe-wrap:hover {
+  filter: drop-shadow(0 0 35px rgba(0, 229, 255, 0.7)) drop-shadow(0 0 75px rgba(0, 102, 255, 0.45));
+}
+
+.hero-globe-wrap:active {
+  cursor: grabbing;
 }
 
 .hero-globe-wrap::before {
@@ -725,8 +740,60 @@ img {
   height: 140%;
   background: radial-gradient(circle, rgba(0, 229, 255, 0.22) 0%, rgba(0, 102, 255, 0.08) 50%, transparent 70%);
   pointer-events: none;
-  filter: blur(20px);
+  filter: blur(25px);
   z-index: 0;
+}
+
+.hero-emblem-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 559 / 686;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-emblem-glow-under {
+  position: absolute;
+  top: 15%;
+  left: 10%;
+  width: 80%;
+  height: 75%;
+  background: radial-gradient(circle, rgba(0, 229, 255, 0.25) 0%, rgba(0, 102, 255, 0.1) 50%, transparent 75%);
+  filter: blur(20px);
+  pointer-events: none;
+  z-index: 0;
+  animation: emblemAuraPulse 4s ease-in-out infinite alternate;
+}
+
+.hero-emblem-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.globe-bg-canvas {
+  z-index: 1;
+}
+
+.hero-emblem-frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  z-index: 2;
+  pointer-events: none;
+  display: block;
+}
+
+.globe-fg-canvas {
+  z-index: 3;
 }
 
 .hero-globe-img {
@@ -734,20 +801,36 @@ img {
   height: auto;
   display: block;
   object-fit: contain;
-  filter: drop-shadow(0 0 20px rgba(0, 229, 255, 0.5)) drop-shadow(0 0 45px rgba(0, 102, 255, 0.3));
-  animation: heroGlobeFloat 6s ease-in-out infinite alternate;
   position: relative;
   z-index: 1;
 }
 
-@keyframes heroGlobeFloat {
+@keyframes emblemAuraPulse {
   0% {
-    transform: translateY(0) scale(0.98);
-    filter: brightness(0.96) drop-shadow(0 0 20px rgba(0, 229, 255, 0.45));
+    transform: scale(0.94);
+    opacity: 0.6;
   }
   100% {
-    transform: translateY(-8px) scale(1.02);
-    filter: brightness(1.2) drop-shadow(0 0 35px rgba(0, 229, 255, 0.75)) drop-shadow(0 0 60px rgba(0, 102, 255, 0.5));
+    transform: scale(1.08);
+    opacity: 0.95;
+  }
+}
+
+@keyframes heroGlobeCircularOrbit {
+  0% {
+    transform: rotate(0deg) translateY(-8px) rotate(0deg);
+  }
+  25% {
+    transform: rotate(90deg) translateY(-8px) rotate(-90deg);
+  }
+  50% {
+    transform: rotate(180deg) translateY(-8px) rotate(-180deg);
+  }
+  75% {
+    transform: rotate(270deg) translateY(-8px) rotate(-270deg);
+  }
+  100% {
+    transform: rotate(360deg) translateY(-8px) rotate(-360deg);
   }
 }
 
@@ -775,7 +858,12 @@ img {
 .brand-line-manthan {
   display: block;
   white-space: nowrap;
-  text-shadow: 0 0 25px rgba(0, 229, 255, 0.45), 0 0 60px rgba(0, 102, 255, 0.3);
+  background: linear-gradient(110deg, #ffffff 15%, #bbf4ff 35%, #ffffff 50%, #00e5ff 75%, #ffffff 90%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: cyberTextShimmer 7s linear infinite;
+  filter: drop-shadow(0 0 25px rgba(0, 229, 255, 0.45)) drop-shadow(0 0 60px rgba(0, 102, 255, 0.3));
 }
 
 .brand-line-hackathon {
@@ -786,6 +874,27 @@ img {
   font-size: 0.88em;
   font-weight: 700;
   text-shadow: 0 0 22px rgba(0, 229, 255, 0.4), 0 0 50px rgba(0, 102, 255, 0.25);
+  animation: hackathonSubtlePulse 5s ease-in-out infinite alternate;
+}
+
+@keyframes cyberTextShimmer {
+  0% {
+    background-position: 200% center;
+  }
+  100% {
+    background-position: -200% center;
+  }
+}
+
+@keyframes hackathonSubtlePulse {
+  0% {
+    letter-spacing: 0.12em;
+    text-shadow: 0 0 20px rgba(0, 229, 255, 0.35);
+  }
+  100% {
+    letter-spacing: 0.135em;
+    text-shadow: 0 0 30px rgba(0, 229, 255, 0.65), 0 0 55px rgba(0, 102, 255, 0.4);
+  }
 }
 
 .highlight-number {
@@ -3999,4 +4108,216 @@ img {
   .timer-unit {
     font-size: 0.55rem;
   }
+}
+
+/* ==========================================================================
+   DYNAMIC WEBSITE ANIMATIONS & CYBER MICRO-INTERACTIONS
+   ========================================================================== */
+
+/* 1. Scroll-Triggered Reveal Animations */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-left.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-right.is-revealed {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.75s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.75s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.is-revealed {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Stagger Delays for Grid Items */
+.delay-1 { transition-delay: 0.08s !important; }
+.delay-2 { transition-delay: 0.16s !important; }
+.delay-3 { transition-delay: 0.24s !important; }
+.delay-4 { transition-delay: 0.32s !important; }
+.delay-5 { transition-delay: 0.40s !important; }
+.delay-6 { transition-delay: 0.48s !important; }
+
+/* 2. Interactive 3D Perspective Card Tilt & Cyber Spotlight */
+.track-card,
+.pillar-card,
+.hero-meta-card,
+.timeline-card {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s ease,
+              border-color 0.35s ease;
+  transform-style: preserve-3d;
+}
+
+.card-spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(350px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 229, 255, 0.14), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+
+.track-card:hover .card-spotlight-overlay,
+.pillar-card:hover .card-spotlight-overlay,
+.hero-meta-card:hover .card-spotlight-overlay,
+.timeline-card:hover .card-spotlight-overlay {
+  opacity: 1;
+}
+
+/* Subtle Card Hover Floating */
+.track-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 229, 255, 0.55);
+  box-shadow: 0 12px 35px rgba(0, 229, 255, 0.18), 0 0 15px rgba(0, 102, 255, 0.2);
+}
+
+.pillar-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(0, 229, 255, 0.6);
+  box-shadow: 0 10px 30px rgba(0, 229, 255, 0.15);
+}
+
+.hero-meta-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  border-color: rgba(0, 229, 255, 0.6);
+  box-shadow: 0 8px 25px rgba(0, 229, 255, 0.2);
+}
+
+/* 3. Button Cyber Light Sheen Animation */
+.btn-cyber {
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-cyber::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 70%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-25deg);
+  transition: none;
+  pointer-events: none;
+}
+
+.btn-cyber:hover::after {
+  left: 160%;
+  transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 4. Radar Ping on Live Status Dot & Live Badges */
+.pulse-dot {
+  position: relative;
+}
+
+.pulse-dot::before {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 1px solid var(--cyan-bright);
+  animation: sonarPing 2.2s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes sonarPing {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+/* 5. Cyber Keycap Ambient Glow Waves */
+.keycap {
+  position: relative;
+  animation: keycapAmbientBreath 4s ease-in-out infinite alternate;
+}
+
+.keycap:nth-child(2) { animation-delay: 0.3s; }
+.keycap:nth-child(3) { animation-delay: 0.6s; }
+.keycap:nth-child(4) { animation-delay: 0.9s; }
+.keycap:nth-child(5) { animation-delay: 1.2s; }
+
+@keyframes keycapAmbientBreath {
+  0% {
+    box-shadow: inset 0 0 10px rgba(0, 229, 255, 0.2), 0 0 8px rgba(0, 229, 255, 0.15);
+  }
+  100% {
+    box-shadow: inset 0 0 16px rgba(0, 229, 255, 0.45), 0 0 20px rgba(0, 229, 255, 0.35);
+  }
+}
+
+/* 6. Countdown Timer Box Neon Pulse */
+.timer-box {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  animation: timerGlowBreath 3.5s ease-in-out infinite alternate;
+}
+
+.timer-box:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+@keyframes timerGlowBreath {
+  0% {
+    box-shadow: 0 0 12px rgba(0, 229, 255, 0.18), inset 0 0 8px rgba(0, 229, 255, 0.12);
+  }
+  100% {
+    box-shadow: 0 0 22px rgba(0, 229, 255, 0.38), inset 0 0 14px rgba(0, 229, 255, 0.25);
+  }
+}
+
+/* 7. Subtle Float Keyframes */
+@keyframes cyberFloatSlow {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+.cyber-float {
+  animation: cyberFloatSlow 5s ease-in-out infinite;
 }

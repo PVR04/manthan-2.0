@@ -14,6 +14,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initRegistrationWizard();
   initModals();
   initOrganizerDesk();
+  initScrollReveal();
+  initCardInteractions();
 });
 
 /* ==========================================================================
@@ -115,7 +117,7 @@ function initParticleNetwork() {
 }
 
 /* ==========================================================================
-   2. COUNTDOWN TIMER TO OCTOBER 22, 2026
+   2. COUNTDOWN TIMER TO NOVEMBER 12, 2026
    ========================================================================== */
 function initCountdownTimer() {
   const daysEl = document.getElementById('cdDays');
@@ -125,8 +127,8 @@ function initCountdownTimer() {
 
   if (!daysEl || !hoursEl || !minsEl || !secsEl) return;
 
-  // Hackathon Kickoff Date: October 22, 2026 at 09:00:00 AM IST
-  const targetDate = new Date('2026-10-22T09:00:00+05:30').getTime();
+  // Hackathon Kickoff Date: November 12, 2026 at 09:00:00 AM IST
+  const targetDate = new Date('2026-11-12T09:00:00+05:30').getTime();
 
   function update() {
     const now = new Date().getTime();
@@ -628,7 +630,7 @@ async function sendAutomaticEmails(data) {
     "Payment_UTR_Number": data.payment.utr,
     "Payer_Account_Name": data.payment.payerName,
     "Registration_Fee": '₹ 1,500/- INR',
-    "Event_Dates": '22 - 24 October 2026',
+    "Event_Dates": '12 - 14 November 2026',
     "Venue": 'Centre for Management Studies (CMS), JAIN (Deemed-to-be University), 133, Lal Bagh Main Rd, Bengaluru 560027',
     "Event_Schedule": 'Day 1: AI Blueprinting & Ideation | Day 2: 24-Hour Hackathon Build | Day 3: Pitch & Defense before Industry Jury',
     "Confirmation_Notice": `Congratulations Team ${data.teamName}! Your registration for MANTHAN 2.0 Hackathon is successfully recorded. Please present your Registration ID (${data.regId}) and payment UTR (${data.payment.utr}) during physical check-in on Day 1 at 8:30 AM.`
@@ -680,7 +682,7 @@ function generateMailtoLink(data) {
   const bodyContent =
 `Dear ANVIKSA Organizing Team,
 
-Here are our official registration details for MANTHAN 2.0 Hackathon (22 - 24 October 2026):
+Here are our official registration details for MANTHAN 2.0 Hackathon (12 - 14 November 2026):
 
 === TEAM INFORMATION ===
 Registration ID: ${data.regId}
@@ -926,4 +928,75 @@ function initOrganizerDesk() {
       }
     });
   }
+}
+
+/* ==========================================================================
+   SCROLL REVEAL OBSERVER
+   ========================================================================== */
+function initScrollReveal() {
+  const targets = document.querySelectorAll(
+    '.track-card, .pillar-card, .timeline-card, .hero-meta-card, .stat-item, .about-main-card, .about-feature-box, .faq-item, .association-badge, .cta-banner-content, .section-title, .section-intro'
+  );
+
+  if (!targets.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -30px 0px'
+  });
+
+  targets.forEach((el) => {
+    el.classList.add('reveal-on-scroll');
+    const parentGrid = el.closest('.tracks-grid, .pillars-grid, .hero-meta-grid, .stats-container');
+    if (parentGrid) {
+      const children = Array.from(parentGrid.children).filter(c => !c.classList.contains('stat-divider'));
+      const idx = children.indexOf(el);
+      if (idx >= 0 && idx < 6) {
+        el.classList.add(`delay-${idx + 1}`);
+      }
+    }
+    observer.observe(el);
+  });
+}
+
+/* ==========================================================================
+   CARD 3D TILT & CYBER SPOTLIGHT
+   ========================================================================== */
+function initCardInteractions() {
+  const cards = document.querySelectorAll('.track-card, .pillar-card, .hero-meta-card, .timeline-card');
+  cards.forEach(card => {
+    if (!card.querySelector('.card-spotlight-overlay')) {
+      const spotlight = document.createElement('div');
+      spotlight.className = 'card-spotlight-overlay';
+      spotlight.setAttribute('aria-hidden', 'true');
+      card.appendChild(spotlight);
+    }
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      card.style.setProperty('--mouse-x', `${x}px`);
+      card.style.setProperty('--mouse-y', `${y}px`);
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -4;
+      const rotateY = ((x - centerX) / centerX) * 4;
+
+      card.style.transform = `perspective(800px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-5px)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+    });
+  });
 }
